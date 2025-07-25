@@ -73,6 +73,40 @@ body.dark-theme .data-header {
   transition: opacity 0.3s;
   white-space: nowrap;
 }
+.chart-container {
+  display: flex;
+  height: 200px;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.bar {
+  position: relative;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bar-letter {
+  position: absolute;
+  top: -25px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+body.dark-theme .bar-letter{
+  color: white;
+}
+
+.bar-fill {
+  width: 100%;
+  height: var(--height);
+  background-color: var(--color);
+  border-radius: 5px 5px 0 0;
+  transition: height 1s ease-out;
+}
+
 
 .bar:hover::after {
   opacity: 1;
@@ -109,17 +143,21 @@ body.dark-theme .name-highlight {
 .typewriter {
   font-size: 1.5rem;
   font-weight: 500;
-  color: rebeccapurple;
+  color: darkmagenta;
   border-right: 3px solid;
   white-space: nowrap;
   overflow: hidden;
   animation: typing 3.5s steps(30, end), blink-caret 0.75s step-end infinite;
+}
+body.dark-theme .typewriter{
+  color: #ffbf00;
 }
 
 .header-cta {
   display: flex;
   gap: 15px;
   margin-top: 2rem;
+  
 }
 
 .cta-button {
@@ -133,14 +171,19 @@ body.dark-theme .name-highlight {
 }
 
 .cta-button.secondary {
-  background: rgb(0, 0, 0);
-  border: 2px solid #d4cccc;
-  color: #ffffff;
+  background: #ffbf00;
+  border: 2px solid #ffffff;
+  color: #000000;
 }
 
 body.dark-theme .cta-button.secondary {
-  color: #ffbf00;
-  border-color: #ffbf00;
+  color: #000000;
+  border-color: #ffffff;
+  background-color: #ffbf00;
+}
+body.dark-theme .cta-button {
+  background: #ffbf00;
+  color: #000000;
 }
 
 /* Responsive Design */
@@ -156,7 +199,7 @@ body.dark-theme .cta-button.secondary {
   }
   
   .name-highlight {
-    font-size: 2rem;
+    font-size: 3rem;
   }
   
   .header-cta {
@@ -295,7 +338,7 @@ body.dark-theme .tool-box {
 
 .project-card {
   border: 1px solid #f0eaea;
-  background-color: #6f8d42;
+  background-color: #a5d0e5;
   padding: 1.5rem;
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -304,6 +347,8 @@ body.dark-theme .tool-box {
 
 body.dark-theme .project-card {
   border-color: #444;
+  background-color: #121212;
+  color: white;
 }
 
 .project-card:hover {
