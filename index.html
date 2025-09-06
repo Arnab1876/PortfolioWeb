@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,11 +13,95 @@
     /* CSS Variables for Theming */
 
 
+/* welcome-curtain.css */
+:root{
+  --duration: 1750ms;           /* set 1000–2000ms as needed */
+  --bg: #0b0f17;
+  --grad: radial-gradient(1200px 600px at 10% -10%, #1b2a4a 0%, #0b0f17 60%);
+  --glass: rgba(255,255,255,0.08);
+  --stroke: rgba(255,255,255,0.25);
+  --text: #eef2ff;
+}
+
+html.wc-lock, html.wc-lock body{ overflow:hidden; height:100%; }
+
+.wc{
+  position: fixed; inset: 0; z-index: 9999;
+  display:grid; place-items:center;
+  background:
+    linear-gradient(0deg, rgba(255,255,255,0.06), rgba(255,255,255,0.06)),
+    var(--grad), var(--bg);
+  color: var(--text);
+}
+
+/* Message fades out near the end */
+.wc__message{
+  position: relative; z-index: 3;
+  display:grid; gap:6px; text-align:center;
+  padding:22px 28px; border-radius:16px;
+  border:1px solid var(--stroke); background: var(--glass);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  animation: msgFade var(--duration) ease-in-out forwards;
+}
+
+.wc__title{
+  font-size: clamp(1.4rem, 1rem + 2.2vw, 2.4rem);
+  font-weight: 900; letter-spacing:.3px;
+  background: linear-gradient(180deg, #fff, #b6d1ff 60%, #8ab4ff);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.wc__subtitle{ font-weight:600; opacity:.9; }
+
+@keyframes msgFade{
+  0%, 70% { opacity:1; transform: translateY(0); }
+  100%    { opacity:0; transform: translateY(-10px); }
+}
+
+/* Curtain panels */
+.wc__panel{
+  position:absolute; top:0; bottom:0; width:50%; z-index:2;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.06)),
+    var(--grad), var(--bg);
+  box-shadow: inset 0 0 80px rgba(0,0,0,.35);
+  animation-fill-mode: forwards;
+}
+
+/* Slide open over the duration */
+.wc__panel--left{
+  left:0; transform: translateX(0);
+  animation: openLeft var(--duration) ease-in-out forwards;
+}
+.wc__panel--right{
+  right:0; transform: translateX(0);
+  animation: openRight var(--duration) ease-in-out forwards;
+}
+@keyframes openLeft { to { transform: translateX(-100%); } }
+@keyframes openRight { to { transform: translateX(100%); } }
+
+/* Hidden final state after JS cleanup */
+.wc--hidden{ display:none !important; }
+
+/* Reduced motion: short fade only, no slide */
+@media (prefers-reduced-motion: reduce){
+  .wc__panel--left,
+  .wc__panel--right{ animation: none; }
+  .wc{ animation: wcFade 700ms ease-out forwards; }
+  .wc__message{ animation: none; }
+  @keyframes wcFade{ from{ opacity:1; } to{ opacity:0; } }
+}
+
+
+
+    
+
     :root {
-      --primary-color: #aff74a;
+      --primary-color: #a80a0a;
       --secondary-color: #6e8efb;
       --accent-color: #a777e3;
-      --text-color: #333;
+      --text-color: #25be17;
       --text-light: #666;
       --bg-color: #f8f9fa;
       --card-bg: #ffffff;
@@ -713,6 +798,220 @@
   background-color: #2980b9;
 }
 
+
+
+/* contact-form.css */
+:root{
+  --bg: #0b0f17;
+  --card: rgba(255,255,255,0.08);
+  --stroke: rgba(255,255,255,0.25);
+  --highlight: #8ab4ff;
+  --text: #eef2ff;
+  --muted: #b8c1d1;
+  --danger: #ff6b6b;
+  --ok: #34d399;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(1200px 600px at 10% -10%, #1b2a4a 0%, #0b0f17 60%) fixed;
+  color: var(--text);
+}
+
+.sr-only{
+  position:absolute !important;
+  width:1px; height:1px;
+  padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0);
+  white-space:nowrap; border:0;
+}
+
+.contact-wrap{
+  min-height:100%;
+  display:grid;
+  place-items:center;
+  padding:32px 16px;
+}
+
+.contact-card{
+  width:min(680px, 92vw);
+  padding:28px 24px;
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+}
+
+.contact-card h2{
+  margin:0 0 18px 0;
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem);
+  letter-spacing: .3px;
+}
+
+form{
+  display:grid;
+  gap:16px;
+}
+
+.field{
+  position:relative;
+  display:grid;
+  gap:6px;
+}
+
+.field input,
+.field textarea{
+  width:100%;
+  padding: 20px 14px 14px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.field textarea{ resize: vertical; }
+
+.field input::placeholder,
+.field textarea::placeholder{ color: transparent; }
+
+.field label{
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform: translateY(-50%);
+  padding: 0 6px;
+  color: var(--muted);
+  pointer-events:none;
+  transition: transform .2s ease, color .2s ease, background .2s ease, top .2s ease;
+  background: transparent;
+}
+
+.field input:focus,
+.field textarea:focus{
+  border-color: var(--highlight);
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 4px rgba(138,180,255,0.15);
+}
+
+/* Floating state when focused or has content */
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label,
+.field textarea:focus + label,
+.field textarea:not(:placeholder-shown) + label{
+  top:0;
+  transform: translateY(-50%) scale(.92);
+  color: var(--highlight);
+  background: rgba(11,15,23,0.8);
+  border-radius: 6px;
+}
+
+/* Helpers and errors */
+.help{
+  font-size:.85rem;
+  color: var(--muted);
+}
+
+.error{
+  min-height: 1.15em;
+  font-size:.9rem;
+  color: var(--danger);
+}
+
+/* Consent */
+.consent{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:6px;
+}
+.consent input{
+  width:18px; height:18px;
+  accent-color: var(--highlight);
+}
+
+/* Button */
+.btn{
+  position:relative;
+  display:inline-grid;
+  place-items:center;
+  gap:8px;
+  min-height:48px;
+  padding: 0 18px;
+  border:none;
+  border-radius: 12px;
+  color:#0b0f17;
+  background: linear-gradient(180deg, #b6d1ff 0%, #8ab4ff 100%);
+  font-weight: 700;
+  cursor:pointer;
+  transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
+  box-shadow: 0 10px 30px rgba(138,180,255,0.35);
+}
+.btn:hover{ filter: saturate(110%); }
+.btn:active{ transform: translateY(1px) scale(.99); }
+.btn[disabled]{ opacity:.6; cursor:not-allowed; }
+
+.btn-spinner{
+  position:absolute;
+  right:14px;
+  width:16px; height:16px;
+  border-radius:50%;
+  border:2px solid rgba(11,15,23,0.15);
+  border-top-color:#0b0f17;
+  opacity:0;
+  transform: scale(.8);
+  transition: opacity .2s ease;
+}
+
+.btn.loading .btn-spinner{ opacity:1; animation: spin .9s linear infinite; }
+
+@keyframes spin{ to{ transform: rotate(360deg); } }
+
+/* Invalid state */
+.is-invalid input,
+.is-invalid textarea{
+  border-color: var(--danger);
+  box-shadow: 0 0 0 4px rgba(255,107,107,0.15);
+}
+.is-valid input,
+.is-valid textarea{
+  border-color: var(--ok);
+}
+
+/* Layout tweaks */
+@media (min-width:720px){
+  form{
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "name email"
+      "subject subject"
+      "message message"
+      "consent consent"
+      "button button";
+  }
+  .field:nth-of-type(1){ grid-area: name; }
+  .field:nth-of-type(2){ grid-area: email; }
+  .field:nth-of-type(3){ grid-area: subject; }
+  .field:nth-of-type(4){ grid-area: message; }
+  .consent{ grid-area: consent; }
+  .btn{ grid-area: button; justify-self: start; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; animation: none !important; }
+}
+
+
+
+
   </style>
 </head>
 <body>
@@ -720,6 +1019,19 @@
 
 
 <!-- Header Section -->
+
+<!-- welcome-curtain.html -->
+<div id="welcomeCurtain" class="wc" aria-hidden="false">
+  <div class="wc__message" role="status" aria-live="polite" aria-atomic="true">
+    <span class="wc__title">Welcome to my Portfolio...</span>
+    <span class="wc__subtitle">Have a look — step up inside ➤➤</span>
+    <span class="wc__subtitle">👉👉👉</span>
+  </div>
+
+  <!-- Curtain panels -->
+  <div class="wc__panel wc__panel--left" aria-hidden="true"></div>
+  <div class="wc__panel wc__panel--right" aria-hidden="true"></div>
+</div>
 
 
 
@@ -949,7 +1261,7 @@
       <div class="footer-cta">
         <h3>Let's Work Together!</h3>
         <p>Let's turn data insights into impactful decisions together. Want to discuss opportunities? I'd love to hear from you.</p>
-        <a href="#contact" class="cta-button">Get In Touch</a>
+        <a href="#contact" class="cta-button">Contact Details</a>
       </div>
 
       <!-- Main Footer Content -->
@@ -982,11 +1294,129 @@
   </a>
 
 
+<!-- contact-form.html -->
+<section class="contact-wrap">
+  <div class="contact-card" role="form" aria-labelledby="contact-title">
+    <h2 id="contact-title">Get in touch</h2>
+
+    <!-- SR-only summary for submit-time errors -->
+    <p id="form-error-summary" class="sr-only" aria-live="assertive"></p>
+
+    <form id="contactForm" novalidate>
+      <!-- Name -->
+      <div class="field">
+        <input id="name" name="name" type="text" autocomplete="name" required
+               minlength="2" aria-describedby="name-help name-error" aria-invalid="false" />
+        <label for="name">Full name</label>
+        <div id="name-help" class="help">Enter your Full Name.</div>
+        <div id="name-error" class="error" role="alert" aria-live="polite"></div>
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <input id="email" name="email" type="email" autocomplete="email" required
+               inputmode="email" aria-describedby="email-help email-error" aria-invalid="false" />
+        <label for="email">Email address</label>
+        <div id="email-help" class="help">We’ll use this mail-id for reply.</div>
+        <div id="email-error" class="error" role="alert" aria-live="polite"></div>
+      </div>
+
+      <!-- Subject -->
+      <div class="field">
+        <input id="subject" name="subject" type="text" required
+               minlength="4" aria-describedby="subject-help subject-error" aria-invalid="false" />
+        <label for="subject">Subject</label>
+        <div id="subject-help" class="help">A short title for the message.</div>
+        <div id="subject-error" class="error" role="alert" aria-live="polite"></div>
+      </div>
+
+      <!-- Message -->
+      <div class="field">
+        <textarea id="message" name="message" rows="5" required
+                  minlength="10" aria-describedby="message-help message-error" aria-invalid="false"></textarea>
+        <label for="message">Message</label>
+        <div id="message-help" class="help">At least 10 characters.</div>
+        <div id="message-error" class="error" role="alert" aria-live="polite"></div>
+      </div>
+
+      <!-- Consent -->
+      <div class="consent">
+        <input id="consent" name="consent" type="checkbox" required aria-describedby="consent-error" />
+        <label for="consent">I agree to be contacted back.</label>
+      </div>
+      <div id="consent-error" class="error" role="alert" aria-live="polite"></div>
+
+      <button type="submit" class="btn">
+        <span class="btn-label">Send message</span>
+        <span class="btn-spinner" aria-hidden="true"></span>
+      </button>
+
+      <!-- SR-only status for submission -->
+      <p id="form-status" class="sr-only" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
 
   <!-- JavaScript for Theme Toggle and Typewriter Effect -->
 
 
   <script>
+  
+// welcome-curtain.js
+(function(){
+  const el = document.getElementById('welcomeCurtain');
+  if (!el) return;
+
+  document.documentElement.classList.add('wc-lock');
+
+  function toMs(v){
+    if (!v) return 1400;
+    v = v.trim();
+    if (v.endsWith('ms')) return parseFloat(v);
+    if (v.endsWith('s')) return parseFloat(v) * 1000;
+    const n = parseFloat(v); return isNaN(n) ? 1400 : n;
+  }
+  const cssDur = getComputedStyle(document.documentElement).getPropertyValue('--duration');
+  const fallback = toMs(cssDur) + 100;
+
+  function hide(){
+    if (el.classList.contains('wc--hidden')) return;
+    el.classList.add('wc--hidden');
+    el.setAttribute('aria-hidden','true');
+    document.documentElement.classList.remove('wc-lock');
+  }
+
+  // Early dismiss
+  function onKey(e){ if (e.key === 'Escape') hide(); }
+  function onClick(){ hide(); }
+  window.addEventListener('keydown', onKey);
+  el.addEventListener('click', onClick);
+
+  // Auto hide after animations complete
+  el.addEventListener('animationend', hide, { once: true });
+
+  // Safety timeout
+  const t = setTimeout(hide, fallback);
+
+  // Cleanup listeners after hide
+  function cleanup(){
+    window.removeEventListener('keydown', onKey);
+    el.removeEventListener('click', onClick);
+    clearTimeout(t);
+  }
+  el.addEventListener('transitionend', cleanup, { once: true });
+})();
+
+
     // Theme Toggle Functionality
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
@@ -1118,6 +1548,124 @@ backToTopButton.addEventListener('click', () => {
     behavior: 'smooth'
   });
 });
+
+
+
+// contact-form.js
+(function(){
+  const form = document.getElementById('contactForm');
+  const summary = document.getElementById('form-error-summary');
+  const status = document.getElementById('form-status');
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  const fields = [
+    {
+      el: document.getElementById('name'),
+      errorEl: document.getElementById('name-error'),
+      validate: v => v.trim().length >= 2 || 'Name must be at least 2 characters.',
+    },
+    {
+      el: document.getElementById('email'),
+      errorEl: document.getElementById('email-error'),
+      validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || 'Enter a valid email address.',
+    },
+    {
+      el: document.getElementById('subject'),
+      errorEl: document.getElementById('subject-error'),
+      validate: v => v.trim().length >= 4 || 'Subject must be at least 4 characters.',
+    },
+    {
+      el: document.getElementById('message'),
+      errorEl: document.getElementById('message-error'),
+      validate: v => v.trim().length >= 10 || 'Message must be at least 10 characters.',
+    },
+  ];
+
+  const consent = {
+    el: document.getElementById('consent'),
+    errorEl: document.getElementById('consent-error'),
+    validate: checked => checked || 'Please confirm consent.',
+  };
+
+  function setValidity(input, errorEl, valid, message){
+    input.setAttribute('aria-invalid', String(!valid));
+    const field = input.closest('.field') || input.closest('.consent');
+    if(field){
+      field.classList.toggle('is-invalid', !valid);
+      field.classList.toggle('is-valid', valid);
+    }
+    errorEl.textContent = valid ? '' : message;
+  }
+
+  // Validate on blur and input for better UX without being too noisy
+  fields.forEach(f=>{
+    f.el.addEventListener('blur', ()=> {
+      const res = f.validate(f.el.value);
+      setValidity(f.el, f.errorEl, res === true, res);
+    });
+    f.el.addEventListener('input', ()=> {
+      if (f.el.getAttribute('aria-invalid') === 'true') {
+        const res = f.validate(f.el.value);
+        setValidity(f.el, f.errorEl, res === true, res);
+      }
+    });
+  });
+  consent.el.addEventListener('change', ()=>{
+    const res = consent.validate(consent.el.checked);
+    setValidity(consent.el, consent.errorEl, res === true, res);
+  });
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    summary.textContent = '';
+    status.textContent = '';
+
+    // Validate all
+    const results = fields.map(f=>{
+      const res = f.validate(f.el.value);
+      setValidity(f.el, f.errorEl, res === true, res);
+      return res === true;
+    });
+    const consentOK = consent.validate(consent.el.checked) === true;
+    setValidity(consent.el, consent.errorEl, consentOK, 'Please confirm consent.');
+    const invalidCount = results.filter(v=>!v).length + (consentOK?0:1);
+
+    if(invalidCount > 0){
+      summary.textContent = `Failed to send: ${invalidCount} field(s) are invalid.`;
+      (document.querySelector('.is-invalid input, .is-invalid textarea') || consent.el).focus();
+      return;
+    }
+
+    // Simulate async submit
+    try{
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+
+      // Replace with real call (example only)
+      await new Promise(r=>setTimeout(r, 1000));
+
+      status.textContent = 'Message sent successfully.';
+      form.reset();
+      // Clear validity styles after reset
+      [...form.querySelectorAll('.is-valid, .is-invalid')].forEach(n=>n.classList.remove('is-valid','is-invalid'));
+      [...form.querySelectorAll('[aria-invalid]')].forEach(n=>n.setAttribute('aria-invalid','false'));
+    }catch(err){
+      summary.textContent = 'There was an error sending the message. Please try again.';
+    }finally{
+      submitBtn.classList.remove('loading');
+      submitBtn.disabled = false;
+    }
+  });
+})();
+
+
+
+
+
+
+
+
+
   </script>
 </body>
 </html>
